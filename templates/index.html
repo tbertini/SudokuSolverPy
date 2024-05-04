@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Solver</title>
+    <style>
+        input {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            text-align: center;
+            margin: 2px;
+            border: 1px solid #000;
+        }
+        input:focus {
+            background-color: lightyellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sudoku Solver</h1>
+    <table>
+        {% for i in range(9) %}
+        <tr>
+            {% for j in range(9) %}
+            <td><input type="text" maxlength="1" pattern="[1-9]" id="cell-{{i}}-{{j}}"></td>
+            {% if j == 2 or j == 5 %}
+            <td style="border-right:3px solid black;"></td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% if i == 2 or i == 5 %}
+        <tr><td colspan="11" style="border-bottom:3px solid black;"></td></tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+    <button onclick="solveSudoku()">Solve Sudoku</button>
+    <script>
+        function solveSudoku() {
+            let puzzle = [];
+            for (let i = 0; i < 9; i++) {
+                let row = [];
+                for (let j = 0; j < 9; j++) {
+                    let val = document.getElementById(`cell-${i}-${j}`).value;
+                    row.push(val ? parseInt(val) : 0);
+                }
+                puzzle.push(row);
+            }
+            fetch('/solve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({puzzle: puzzle}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'solved') {
+                    for (let i = 0; i < 9; i++) {
+                        for (let j = 0; j < 9; j++) {
+                            document.getElementById(`cell-${i}-${j}`).value = data.solution[i][j];
+                        }
+                    }
+                } else {
+                    alert('Unsolvable');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
