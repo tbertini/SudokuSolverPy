@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from z3 import *
+import random
 
 app = Flask(__name__)
 
@@ -46,6 +47,57 @@ def solve():
             return jsonify({'status': 'unsolvable'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
+    
+@app.route('/generate')
+def generate():
+    difficulty = request.args.get('difficulty', '2')  # Default to medium if not specified
+    puzzle = generate_sudoku_puzzle(difficulty)
+    return jsonify({'status': 'generated', 'puzzle': puzzle})
+
+
+def generate_full_grid():
+    base = 3
+    side = base * base
+
+    # pattern for a baseline valid solution
+    def pattern(r, c): return (base * (r % base) + r // base + c) % side
+
+    # randomize rows, columns and numbers (of valid base pattern)
+    def shuffle(s): return random.sample(s, len(s))
+
+    rBase = range(base)
+    rows = [g * base + r for g in shuffle(rBase) for r in shuffle(rBase)]
+    cols = [g * base + c for g in shuffle(rBase) for c in shuffle(rBase)]
+    nums = shuffle(range(1, base * base + 1))
+
+    # produce board using randomized baseline pattern
+    board = [[nums[pattern(r, c)] for c in cols] for r in rows]
+
+    return board
+
+def remove_cells(grid, level):
+    base = 3
+    side = base * base
+    squares = side * side
+    empty_cells = int(squares * level)  # level is the fraction of cells to clear
+
+    for p in random.sample(range(squares), empty_cells):
+        grid[p // side][p % side] = 0
+
+    return grid
+
+def generate_sudoku_puzzle(difficulty):
+    grid = generate_full_grid()
+    if difficulty == '1':  # Easy
+        level = 0.37
+    elif difficulty == '2':  # Medium
+        level = 0.49
+    else:  # Hard
+        level = 0.61
+
+    puzzle = remove_cells(grid, level)
+    return puzzle
+
 
 if __name__ == '__main__':
     app.run(debug=True)
