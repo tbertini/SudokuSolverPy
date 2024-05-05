@@ -31,7 +31,7 @@ function solveSudoku() {
     });
 }
 
-function restartSudoku() {
+function resetSudoku() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             document.getElementById(`cell-${i}-${j}`).value = '';
@@ -42,7 +42,7 @@ function restartSudoku() {
 }
 
 function generatePuzzle() {
-    restartSudoku();
+    resetSudoku();
     const difficulty = document.getElementById('difficulty-slider').value;
     fetch(`/generate?difficulty=${difficulty}`, {
         method: 'GET'
@@ -60,3 +60,4 @@ function generatePuzzle() {
         }
     });
 }
+
