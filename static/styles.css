@@ -91,8 +91,8 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
 }
+
 
 .generate-button:hover {
     background-color: #138496;
@@ -139,9 +139,66 @@ body {
     border-radius: 50%; 
 }
 
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0 20px;
+}
+
 .slider-label {
-    display: block;
-    margin-bottom: 10px;
+    display: inline-block;
     font-size: 16px;
     color: #333;
+}
+
+#difficulty-slider {
+    width: 100%;
+}
+
+.reset-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #6c757d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.reset-button:hover {
+    background-color: #5a6268;
+}
+
+.restart-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #ffc107; /* Different color to distinguish from Reset button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.restart-button:hover {
+    background-color: #e0a800;
+}
+
+.restart-button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-container div{
+    border-radius: 8px;
+    padding: 15px 0px;
+    word-wrap: break-word;
+    min-width: 12rem;
 }

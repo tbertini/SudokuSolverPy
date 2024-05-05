@@ -1,3 +1,18 @@
+let initialPuzzle = [];
+let isPuzzleGenerated = false;
+
+function storeInitialPuzzle() {
+    initialPuzzle = [];
+    for (let i = 0; i < 9; i++) {
+        let row = [];
+        for (let j = 0; j < 9; j++) {
+            let cell = document.getElementById(`cell-${i}-${j}`);
+            row.push(cell.value ? parseInt(cell.value) : 0);
+        }
+        initialPuzzle.push(row);
+    }
+}
+
 function solveSudoku() {
     let puzzle = [];
     for (let i = 0; i < 9; i++) {
@@ -31,6 +46,19 @@ function solveSudoku() {
     });
 }
 
+function restartSudoku() {
+    const restartButton = document.getElementById('restart-button');
+    if (restartButton.classList.contains('disabled')) return; // Prevent function if button is disabled
+
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            document.getElementById(`cell-${i}-${j}`).value = initialPuzzle[i][j] || '';
+        }
+    }
+    document.body.style.backgroundColor = ""; // Reset background color
+    document.body.classList.remove('flash-red'); // Remove flashing effect
+}
+
 function resetSudoku() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -39,9 +67,10 @@ function resetSudoku() {
     }
     document.body.style.backgroundColor = ""; // Reset background color
     document.body.classList.remove('flash-red'); // Remove flashing effect
+    toggleRestartButton(false);
 }
 
-function generatePuzzle() {
+function generateSudoku() {
     resetSudoku();
     const difficulty = document.getElementById('difficulty-slider').value;
     fetch(`/generate?difficulty=${difficulty}`, {
@@ -55,9 +84,23 @@ function generatePuzzle() {
                     document.getElementById(`cell-${i}-${j}`).value = data.puzzle[i][j] || '';
                 }
             }
+            storeInitialPuzzle();
+            toggleRestartButton(true);
         } else {
-            alert('Failed to generate puzzle');
+            alert('Failed to generate sudoku');
         }
     });
 }
 
+function toggleRestartButton(enable) {
+    const restartButton = document.getElementById('restart-button');
+    if (enable) {
+        restartButton.classList.remove('disabled');
+        restartButton.disabled = false; // Ensure button is not disabled
+        isPuzzleGenerated = true;
+    } else {
+        restartButton.classList.add('disabled');
+        restartButton.disabled = true; // Disable the button
+        isPuzzleGenerated = false;
+    }
+}

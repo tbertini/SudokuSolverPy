@@ -8,10 +8,24 @@
     <div class="container">
         <h1>Sudoku Solver</h1>
         <div class="slider-container">
-            <label for="difficulty-slider" class="slider-label">Difficulty:</label>
+            <div class="slider-labels">
+                <span class="slider-label">Easy</span>
+                <span class="slider-label">Medium</span>
+                <span class="slider-label">Hard</span>
+            </div>
             <input type="range" id="difficulty-slider" min="1" max="3" value="2" class="slider">
         </div>
-        <button onclick="generatePuzzle()" class="generate-button">Generate Puzzle</button>
+        <div class="button-container">
+            <div class="left-div">
+                <button onclick="resetSudoku()" class="reset-button">Reset</button>
+            </div>
+            <div>
+                <button onclick="generateSudoku()" class="generate-button">Generate Sudoku</button>
+            </div>
+            <div class="right-div">
+                <button onclick="restartSudoku()" id="restart-button" class="restart-button disabled" disabled>Restart</button>
+            </div>
+        </div>
         <table class="sudoku-grid">
             {% for i in range(9) %}
             <tr>
@@ -28,7 +42,6 @@
             {% endfor %}
         </table>
         <button onclick="solveSudoku()" class="solve-button">Solve Sudoku</button>
-        <button onclick="resetSudoku()" class="restart-button">Reset</button>
     </div>
     <script src="/static/scripts.js"></script>
 </body>
