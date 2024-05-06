@@ -14,6 +14,9 @@ function storeInitialPuzzle() {
 }
 
 function solveSudoku() {
+    const solveButton = document.querySelector('.solve-button');
+    solveButton.disabled = true; // Disable the button to prevent multiple requests
+
     let puzzle = [];
     for (let i = 0; i < 9; i++) {
         let row = [];
@@ -43,8 +46,16 @@ function solveSudoku() {
         } else {
             document.body.classList.add('flash-red'); // Add flashing effect
         }
+    })
+    .catch(error => {
+        console.error('Error solving the Sudoku:', error);
+        alert('Failed to solve the Sudoku. Please try again.');
+    })
+    .finally(() => {
+        solveButton.disabled = false; // Re-enable the button after the fetch operation
     });
 }
+
 
 function restartSudoku() {
     const restartButton = document.getElementById('restart-button');
