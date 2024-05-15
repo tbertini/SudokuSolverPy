@@ -15,7 +15,22 @@ function storeInitialPuzzle() {
 
 function solveSudoku() {
     const solveButton = document.querySelector('.solve-button');
-    solveButton.disabled = true; // Disable the button to prevent multiple requests
+    const resetButton = document.querySelector('.reset-button');
+    const generateButton = document.querySelector('.generate-button');
+    const restartButton = document.querySelector('.restart-button');
+
+    solveButton.disabled = true; 
+    solveButton.textContent = "Solving Sudoku";
+    solveButton.classList.add('disabled'); 
+
+    resetButton.disabled = true;
+    resetButton.classList.add('disabled');
+
+    generateButton.disabled = true;
+    generateButton.classList.add('disabled');
+
+    restartButton.disabled = true;
+    restartButton.classList.add('disabled');
 
     let puzzle = [];
     for (let i = 0; i < 9; i++) {
@@ -41,10 +56,10 @@ function solveSudoku() {
                     document.getElementById(`cell-${i}-${j}`).value = data.solution[i][j];
                 }
             }
-            document.body.style.backgroundColor = "#28a745"; // Set background color to green
-            document.body.classList.remove('flash-red'); // Remove flashing effect if present
+            document.body.style.backgroundColor = "#28a745"; 
+            document.body.classList.remove('flash-red'); 
         } else {
-            document.body.classList.add('flash-red'); // Add flashing effect
+            document.body.classList.add('flash-red'); 
         }
     })
     .catch(error => {
@@ -52,22 +67,32 @@ function solveSudoku() {
         alert('Failed to solve the Sudoku. Please try again.');
     })
     .finally(() => {
-        solveButton.disabled = false; // Re-enable the button after the fetch operation
+        solveButton.disabled = false; 
+        solveButton.textContent = "Solve Sudoku"; 
+        solveButton.classList.remove('disabled'); 
+
+        resetButton.disabled = false;
+        resetButton.classList.remove('disabled');
+
+        generateButton.disabled = false;
+        generateButton.classList.remove('disabled');
+
+        restartButton.disabled = false;
+        restartButton.classList.remove('disabled');
     });
 }
 
-
 function restartSudoku() {
     const restartButton = document.getElementById('restart-button');
-    if (restartButton.classList.contains('disabled')) return; // Prevent function if button is disabled
+    if (restartButton.classList.contains('disabled')) return;
 
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             document.getElementById(`cell-${i}-${j}`).value = initialPuzzle[i][j] || '';
         }
     }
-    document.body.style.backgroundColor = ""; // Reset background color
-    document.body.classList.remove('flash-red'); // Remove flashing effect
+    document.body.style.backgroundColor = ""; 
+    document.body.classList.remove('flash-red'); 
 }
 
 function resetSudoku() {
@@ -76,8 +101,8 @@ function resetSudoku() {
             document.getElementById(`cell-${i}-${j}`).value = '';
         }
     }
-    document.body.style.backgroundColor = ""; // Reset background color
-    document.body.classList.remove('flash-red'); // Remove flashing effect
+    document.body.style.backgroundColor = ""; 
+    document.body.classList.remove('flash-red');
     toggleRestartButton(false);
 }
 
@@ -107,11 +132,11 @@ function toggleRestartButton(enable) {
     const restartButton = document.getElementById('restart-button');
     if (enable) {
         restartButton.classList.remove('disabled');
-        restartButton.disabled = false; // Ensure button is not disabled
+        restartButton.disabled = false; 
         isPuzzleGenerated = true;
     } else {
         restartButton.classList.add('disabled');
-        restartButton.disabled = true; // Disable the button
+        restartButton.disabled = true; 
         isPuzzleGenerated = false;
     }
 }

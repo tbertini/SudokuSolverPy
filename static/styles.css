@@ -58,6 +58,15 @@ body {
     background-color: #0056b3;
 }
 
+.solve-button.disabled,
+.reset-button.disabled,
+.generate-button.disabled,
+.restart-button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
+
 .restart-button {
     padding: 10px 20px;
     font-size: 16px;
@@ -174,7 +183,7 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     color: white;
-    background-color: #ffc107; /* Different color to distinguish from Reset button */
+    background-color: #ffc107; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
